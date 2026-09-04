@@ -736,8 +736,12 @@
 
         const BUY_URL = 'https://pump.fun/coin/GLRGgpetTFGoetoD2A2CmTVCJTrnqfyxMGqPWFMcpump';
         const TOKEN_MINT = 'GLRGgpetTFGoetoD2A2CmTVCJTrnqfyxMGqPWFMcpump';
-        const SOLANA_RPC_URL = 'https://api.mainnet-beta.solana.com';
+        const SOLANA_RPC_URLS = [
+            'https://solana-mainnet.g.alchemy.com/v2/demo',
+            'https://api.mainnet-beta.solana.com'
+        ];
         const PREFERRED_DEX_ID = 'pumpswap';
+        const SUPPLY_REFRESH_MS = 30000;
 
         // The DexScreener pair ID from your URL
         const PAIR_ID = '8hwqohdyg3vb5r2vesvpmv5c7dhwthqe4x6montdqivx';
@@ -756,6 +760,8 @@
         const connectWalletBtn = document.getElementById('connectWalletBtn');
         const buyButton = document.getElementById('buyButton');
         const walletStatus = document.getElementById('walletStatus');
+        let lastSupplyRefreshAt = 0;
+        let knownTotalSupply = null;
 
         // Helper: format currency
         function formatUSD(value) {
@@ -789,34 +795,41 @@
         }
 
         async function fetchTokenSupply() {
-            try {
-                const response = await fetch(SOLANA_RPC_URL, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        jsonrpc: '2.0',
-                        id: 1,
-                        method: 'getTokenSupply',
-                        params: [TOKEN_MINT]
-                    })
-                });
+            let lastError = null;
 
-                if (!response.ok) {
-                    throw new Error(`RPC error: ${response.status}`);
+            for (const rpcUrl of SOLANA_RPC_URLS) {
+                try {
+                    const response = await fetch(rpcUrl, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            jsonrpc: '2.0',
+                            id: 1,
+                            method: 'getTokenSupply',
+                            params: [TOKEN_MINT]
+                        })
+                    });
+
+                    if (!response.ok) {
+                        throw new Error(`RPC error: ${response.status}`);
+                    }
+
+                    const data = await response.json();
+                    const value = data && data.result && data.result.value ? data.result.value : null;
+                    if (!value) {
+                        throw new Error('Missing token supply payload');
+                    }
+
+                    const totalSupply = Number(value.uiAmountString ?? value.uiAmount ?? 0) || 0;
+                    return totalSupply;
+                } catch (error) {
+                    lastError = error;
+                    console.warn(`Unable to fetch live token supply from ${rpcUrl}:`, error);
                 }
-
-                const data = await response.json();
-                const value = data && data.result && data.result.value ? data.result.value : null;
-                if (!value) {
-                    throw new Error('Missing token supply payload');
-                }
-
-                const totalSupply = Number(value.uiAmountString ?? value.uiAmount ?? 0) || 0;
-                return totalSupply;
-            } catch (error) {
-                console.warn('Unable to fetch live token supply from Solana RPC:', error);
-                return null;
             }
+
+            console.warn('Unable to fetch live token supply from all configured Solana RPC endpoints:', lastError);
+            return null;
         }
 
         function selectBestPair(data) {
@@ -903,6 +916,17 @@
         }
 
         // Fetch and update data
+        async function refreshSupplyIfNeeded() {
+            const now = Date.now();
+            if (lastSupplyRefreshAt && now - lastSupplyRefreshAt < SUPPLY_REFRESH_MS) {
+                return knownTotalSupply;
+            }
+
+            lastSupplyRefreshAt = now;
+            knownTotalSupply = await fetchTokenSupply();
+            return knownTotalSupply;
+        }
+
         async function fetchAndUpdate() {
             try {
                 const response = await fetch(API_URL);
@@ -924,8 +948,7 @@
                 const marketCap = Number(pair.marketCap ?? 0) || 0;
                 const volume24h = Number(pair.volume?.h24 ?? pair.volume ?? 0) || 0;
                 const liquidity = Number(pair.liquidity?.usd ?? pair.liquidity ?? 0) || 0;
-
-                const totalSupply = await fetchTokenSupply();
+                const totalSupply = await refreshSupplyIfNeeded();
 
                 // Update DOM
                 priceEl.textContent = formatPrice(priceUsd);
@@ -953,7 +976,7 @@
         // Initial fetch
         fetchAndUpdate();
 
-        // Refresh every second for live market + burn monitoring
+        // Refresh price/market data every second, but throttle supply checks to avoid RPC limits.
         setInterval(fetchAndUpdate, 1000);
 
     })();
