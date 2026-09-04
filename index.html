@@ -668,6 +668,10 @@
                 <strong id="totalSupplyValue">Checking...</strong>
             </div>
             <div class="burn-item">
+                <span class="label">Burned Supply</span>
+                <strong id="burnedSupplyValue">Audit pending</strong>
+            </div>
+            <div class="burn-item">
                 <span class="label">Burn status</span>
                 <strong id="burnStatus">Checking...</strong>
             </div>
@@ -742,6 +746,7 @@
         ];
         const PREFERRED_DEX_ID = 'pumpswap';
         const SUPPLY_REFRESH_MS = 30000;
+        const BURN_WALLET_ADDRESSES = [];
 
         // The DexScreener pair ID from your URL
         const PAIR_ID = '8hwqohdyg3vb5r2vesvpmv5c7dhwthqe4x6montdqivx';
@@ -753,6 +758,7 @@
         const volumeEl = document.getElementById('volumeValue');
         const liquidityEl = document.getElementById('liquidityValue');
         const totalSupplyEl = document.getElementById('totalSupplyValue');
+        const burnedSupplyEl = document.getElementById('burnedSupplyValue');
         const burnStatusEl = document.getElementById('burnStatus');
         const mintStatusEl = document.getElementById('mintStatus');
         const liquidityStatusEl = document.getElementById('liquidityStatus');
@@ -859,13 +865,56 @@
             })[0];
         }
 
-        function updateBurnMonitoring(pair, totalSupply) {
+        async function fetchBurnedSupplyExact() {
+            if (!Array.isArray(BURN_WALLET_ADDRESSES) || BURN_WALLET_ADDRESSES.length === 0) {
+                return null;
+            }
+
+            let totalBurned = 0;
+
+            for (const walletAddress of BURN_WALLET_ADDRESSES) {
+                try {
+                    const response = await fetch(SOLANA_RPC_URLS[0], {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            jsonrpc: '2.0',
+                            id: 1,
+                            method: 'getTokenAccountsByOwner',
+                            params: [
+                                walletAddress,
+                                { mint: TOKEN_MINT },
+                                { encoding: 'jsonParsed' }
+                            ]
+                        })
+                    });
+
+                    if (!response.ok) {
+                        continue;
+                    }
+
+                    const data = await response.json();
+                    const accounts = data?.result?.value || [];
+                    for (const item of accounts) {
+                        const parsed = item?.account?.data?.parsed?.info;
+                        const amount = Number(parsed?.tokenAmount?.uiAmount ?? 0) || 0;
+                        totalBurned += amount;
+                    }
+                } catch (error) {
+                    console.warn(`Unable to fetch burned supply for wallet ${walletAddress}:`, error);
+                }
+            }
+
+            return totalBurned > 0 ? totalBurned : 0;
+        }
+
+        function updateBurnMonitoring(pair, totalSupply, burnedSupply) {
             const priceUsd = Number(pair.priceUsd ?? pair.price ?? 0) || 0;
             const liquidityUsd = Number(pair.liquidity?.usd ?? pair.liquidity ?? 0) || 0;
             const marketCap = Number(pair.marketCap ?? 0) || 0;
 
             totalSupplyEl.textContent = totalSupply !== null ? formatSupply(totalSupply) : 'Monitoring...';
-            const isBurnVerified = priceUsd > 0 && liquidityUsd > 0 && marketCap >= 0;
+            burnedSupplyEl.textContent = burnedSupply === null ? 'Audit pending' : formatSupply(burnedSupply);
             burnStatusEl.textContent = totalSupply !== null ? 'Verified on-chain' : 'Monitoring';
             mintStatusEl.textContent = 'Renounced';
             liquidityStatusEl.textContent = liquidityUsd > 0 ? 'Burnt / Locked' : 'Monitoring';
@@ -949,13 +998,14 @@
                 const volume24h = Number(pair.volume?.h24 ?? pair.volume ?? 0) || 0;
                 const liquidity = Number(pair.liquidity?.usd ?? pair.liquidity ?? 0) || 0;
                 const totalSupply = await refreshSupplyIfNeeded();
+                const burnedSupply = await fetchBurnedSupplyExact();
 
                 // Update DOM
                 priceEl.textContent = formatPrice(priceUsd);
                 mcapEl.textContent = formatUSD(marketCap);
                 volumeEl.textContent = formatUSD(volume24h);
                 liquidityEl.textContent = formatUSD(liquidity);
-                updateBurnMonitoring(pair, totalSupply);
+                updateBurnMonitoring(pair, totalSupply, burnedSupply);
 
                 // Update title with price
                 document.title = `$PONSLESS (${formatPrice(priceUsd)}) – The Most Honest Meme Token`;
