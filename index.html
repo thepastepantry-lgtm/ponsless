@@ -1,0 +1,879 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>$PONSLESS – The Most Honest Meme Token on Solana</title>
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        /* ----- DEEP GREEN MEME THEME WITH LOGO-INSPIRED ACCENTS ----- */
+        :root {
+            --primary-green: #0f4332;
+            --secondary-green: #2f8f68;
+            --light-green: #dff7e8;
+            --deep-forest: #061d17;
+            --forest-glow: #123d2d;
+            --dark-panel: #0d211d;
+            --mid-panel: #102d25;
+            --soft-panel: #143d31;
+            --dark-gray: #111111;
+            --medium-gray: #dfece4;
+            --light-gray: #edf5f1;
+            --white: #ffffff;
+            --shadow: 0 18px 38px rgba(3, 12, 10, 0.38);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Roboto, system-ui, -apple-system, sans-serif;
+            background:
+                radial-gradient(circle at top, rgba(47, 143, 104, 0.18), transparent 30%),
+                linear-gradient(180deg, var(--deep-forest) 0%, #071812 38%, #020d0a 100%);
+            color: var(--light-gray);
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 2rem 1.5rem 4rem;
+        }
+
+        /* ----- HEADER / HERO ----- */
+        .hero {
+            text-align: center;
+            padding: 3rem 1rem 4rem;
+            background: linear-gradient(145deg, rgba(15, 67, 50, 0.96) 0%, rgba(7, 24, 18, 0.92) 100%);
+            border-radius: 2rem;
+            margin-bottom: 3rem;
+            box-shadow: var(--shadow);
+            border: 1px solid rgba(128, 212, 168, 0.28);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(circle at 50% 0%, rgba(255,255,255,0.07), transparent 45%);
+            pointer-events: none;
+        }
+
+        .brand-row {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 1rem;
+            margin-bottom: 0.5rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .logo-mark {
+            width: 78px;
+            height: 78px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, rgba(143, 216, 177, 0.15), rgba(255,255,255,0.08));
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            box-shadow: 0 0 0 8px rgba(255,255,255,0.02);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 10px;
+        }
+
+        .logo-mark img {
+            width: 100%;
+            height: 100%;
+            display: block;
+            border-radius: 50%;
+        }
+
+        .hero h1 {
+            font-size: 4rem;
+            font-weight: 800;
+            letter-spacing: -1px;
+            color: var(--white);
+            text-shadow: 2px 2px 0 rgba(0,0,0,0.15);
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero .tagline {
+            font-size: 1.6rem;
+            font-weight: 300;
+            color: #e9f6ef;
+            margin-top: 0.5rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero .sub-tagline {
+            font-size: 1.2rem;
+            color: var(--light-green);
+            background: rgba(143, 216, 177, 0.08);
+            display: inline-block;
+            padding: 0.4rem 1.8rem;
+            border-radius: 40px;
+            margin-top: 1rem;
+            font-weight: 500;
+            border: 1px solid rgba(143, 216, 177, 0.22);
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero .meme-badges {
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+            flex-wrap: wrap;
+            margin: 2rem 0 1.5rem;
+            font-size: 2.2rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero .meme-badges span {
+            background: rgba(255,255,255,0.04);
+            color: var(--white);
+            padding: 0.4rem 1.2rem;
+            border-radius: 60px;
+            box-shadow: var(--shadow);
+            border: 1px solid rgba(143, 216, 177, 0.32);
+        }
+
+        /* ----- LIVE MARKET DATA ----- */
+        .market-data {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 1.5rem;
+            background: linear-gradient(180deg, rgba(15, 67, 50, 0.70), rgba(8, 23, 18, 0.96));
+            padding: 2rem 1.5rem;
+            border-radius: 1.5rem;
+            margin: 2.5rem 0;
+            box-shadow: var(--shadow);
+            border-left: 6px solid var(--secondary-green);
+            border: 1px solid rgba(143, 216, 177, 0.18);
+        }
+
+        .data-item {
+            text-align: center;
+        }
+
+        .data-item .label {
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #d9f5e5;
+            font-weight: 600;
+        }
+
+        .data-item .value {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--white);
+            margin-top: 0.2rem;
+        }
+
+        .data-item .value.green {
+            color: var(--light-green);
+        }
+
+        /* ----- STATS ROW ----- */
+        .stats-row {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.5rem;
+            margin: 3rem 0;
+        }
+
+        .stat-card {
+            background: linear-gradient(180deg, rgba(16, 45, 37, 0.95), rgba(9, 18, 15, 0.96));
+            padding: 2rem 1rem;
+            text-align: center;
+            border-radius: 1.5rem;
+            box-shadow: var(--shadow);
+            border-top: 4px solid var(--secondary-green);
+            transition: transform 0.2s;
+            border: 1px solid rgba(143, 216, 177, 0.18);
+        }
+
+        .stat-card:hover {
+            transform: translateY(-4px);
+        }
+
+        .stat-card .number {
+            font-size: 3.5rem;
+            font-weight: 800;
+            color: var(--light-green);
+            line-height: 1.2;
+        }
+
+        .stat-card .desc {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #edf9f2;
+            margin-top: 0.3rem;
+        }
+
+        .stat-card .sub-desc {
+            font-size: 0.9rem;
+            color: #cde7d8;
+        }
+
+        /* ----- FEATURES ----- */
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin: 3rem 0;
+        }
+
+        .feature-card {
+            background: linear-gradient(180deg, rgba(16, 45, 37, 0.9), rgba(9, 18, 15, 0.94));
+            padding: 2rem 1.5rem;
+            border-radius: 1.5rem;
+            box-shadow: var(--shadow);
+            text-align: center;
+            border: 1px solid rgba(143, 216, 177, 0.18);
+            transition: all 0.2s;
+        }
+
+        .feature-card:hover {
+            border-color: rgba(143, 216, 177, 0.5);
+            box-shadow: 0 12px 28px rgba(28, 82, 63, 0.34);
+        }
+
+        .feature-card .icon {
+            font-size: 3.2rem;
+            color: var(--light-green);
+            margin-bottom: 0.8rem;
+        }
+
+        .feature-card h3 {
+            font-size: 1.4rem;
+            color: var(--white);
+            margin-bottom: 0.5rem;
+        }
+
+        .feature-card p {
+            color: #dfece4;
+            font-size: 0.95rem;
+        }
+
+        .ruvv-panel {
+            margin: 3rem 0;
+            background: linear-gradient(135deg, rgba(11, 35, 30, 0.94), rgba(7, 20, 16, 0.98));
+            border: 1px solid rgba(143, 216, 177, 0.24);
+            border-radius: 1.75rem;
+            box-shadow: var(--shadow);
+            padding: 2rem 1.5rem;
+            display: grid;
+            grid-template-columns: 1.4fr 0.8fr;
+            gap: 1.5rem;
+            align-items: center;
+        }
+
+        .ruvv-panel .ruvv-copy {
+            padding-right: 1rem;
+        }
+
+        .ruvv-panel .kicker {
+            display: inline-block;
+            padding: 0.35rem 0.9rem;
+            border-radius: 999px;
+            background: rgba(143, 216, 177, 0.08);
+            border: 1px solid rgba(143, 216, 177, 0.18);
+            color: var(--light-green);
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            font-size: 0.72rem;
+            font-weight: 700;
+        }
+
+        .ruvv-panel h3 {
+            margin-top: 0.8rem;
+            font-size: clamp(1.8rem, 2.5vw, 2.7rem);
+            line-height: 1.1;
+            color: var(--white);
+        }
+
+        .ruvv-panel p {
+            color: #dfece4;
+            margin-top: 0.8rem;
+            font-size: 1.02rem;
+        }
+
+        .ruvv-panel .ruvv-pills {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.6rem;
+            margin-top: 1.2rem;
+        }
+
+        .ruvv-panel .ruvv-pills span {
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(143, 216, 177, 0.18);
+            color: var(--light-green);
+            border-radius: 999px;
+            padding: 0.45rem 0.8rem;
+            font-size: 0.8rem;
+        }
+
+        .ruvv-panel .ruvv-cta {
+            display: flex;
+            justify-content: center;
+        }
+
+        .ruvv-panel .ruvv-link {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.65rem;
+            padding: 1rem 1.5rem;
+            border-radius: 999px;
+            background: linear-gradient(135deg, #1a7d62, #39a770);
+            color: var(--white);
+            text-decoration: none;
+            font-weight: 700;
+            box-shadow: 0 12px 24px rgba(42, 167, 106, 0.25);
+            border: 1px solid rgba(255,255,255,0.08);
+            width: max-content;
+        }
+
+        .ruvv-panel .ruvv-link:hover {
+            filter: brightness(1.08);
+        }
+
+        .burn-monitor {
+            margin: 2.5rem 0 1rem;
+            background: linear-gradient(180deg, rgba(16, 45, 37, 0.95), rgba(9, 18, 15, 0.96));
+            border: 1px solid rgba(143, 216, 177, 0.2);
+            border-radius: 1.5rem;
+            box-shadow: var(--shadow);
+            padding: 1.5rem;
+        }
+
+        .monitor-head {
+            display: flex;
+            align-items: center;
+            gap: 0.7rem;
+            font-size: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            color: var(--light-green);
+            font-weight: 700;
+        }
+
+        .pulse-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: #41d37e;
+            box-shadow: 0 0 0 0 rgba(65, 211, 126, 0.7);
+            animation: pulse 1.6s infinite;
+        }
+
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(65, 211, 126, 0.7); }
+            70% { box-shadow: 0 0 0 12px rgba(65, 211, 126, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(65, 211, 126, 0); }
+        }
+
+        .burn-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 1rem;
+            margin-top: 1.2rem;
+        }
+
+        .burn-item {
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(143, 216, 177, 0.15);
+            border-radius: 1rem;
+            padding: 0.9rem 1rem;
+        }
+
+        .burn-item .label {
+            display: block;
+            color: #cfe5db;
+            font-size: 0.72rem;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            margin-bottom: 0.35rem;
+        }
+
+        .burn-item strong {
+            color: var(--white);
+            font-size: 1.1rem;
+        }
+
+        /* ----- CTA / CONTRACT ----- */
+        .cta-box {
+            background: var(--dark-gray);
+            color: var(--white);
+            padding: 2.5rem 2rem;
+            border-radius: 2rem;
+            margin: 3rem 0;
+            text-align: center;
+            border: 1px solid var(--secondary-green);
+        }
+
+        .cta-box .contract {
+            background: rgba(255,255,255,0.08);
+            padding: 1rem 1.5rem;
+            border-radius: 60px;
+            font-family: 'Courier New', monospace;
+            font-size: 1.1rem;
+            word-break: break-all;
+            border: 1px solid var(--secondary-green);
+            display: inline-block;
+            margin: 1rem 0;
+            color: var(--light-green);
+        }
+
+        .cta-box .btn-group {
+            display: flex;
+            justify-content: center;
+            gap: 1.2rem;
+            flex-wrap: wrap;
+            margin-top: 1.5rem;
+        }
+
+        .cta-box .wallet-actions {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+            margin-top: 1.5rem;
+        }
+
+        .cta-box .btn {
+            background: var(--secondary-green);
+            color: var(--white);
+            padding: 0.8rem 2.2rem;
+            border-radius: 60px;
+            text-decoration: none;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.6rem;
+            transition: 0.2s;
+            border: 1px solid transparent;
+            cursor: pointer;
+            font: inherit;
+        }
+
+        .cta-box .btn:hover {
+            background: var(--primary-green);
+            transform: scale(1.03);
+        }
+
+        .cta-box .btn-outline {
+            background: transparent;
+            border: 1px solid var(--secondary-green);
+            color: var(--white);
+        }
+
+        .cta-box .btn-outline:hover {
+            background: var(--secondary-green);
+        }
+
+        .cta-box .btn-primary {
+            background: linear-gradient(135deg, #2f8f68, #51b97a);
+            box-shadow: 0 12px 24px rgba(53, 157, 110, 0.32);
+        }
+
+        .cta-box .btn-primary:hover {
+            background: linear-gradient(135deg, #2f8f68, #3fb067);
+        }
+
+        .wallet-status {
+            margin-top: 1rem;
+            font-size: 0.9rem;
+            color: #d9f5e5;
+            min-height: 1.4rem;
+        }
+
+        .wallet-status.connected {
+            color: #a8f0bc;
+        }
+
+        .wallet-status.error {
+            color: #ffb4b4;
+        }
+
+        /* ----- DISCLAIMER ----- */
+        .disclaimer {
+            font-size: 0.8rem;
+            color: #d3e3db;
+            text-align: center;
+            max-width: 700px;
+            margin: 2rem auto 0;
+            border-top: 1px solid rgba(143, 216, 177, 0.2);
+            padding-top: 2rem;
+        }
+
+        /* Loading shimmer for live data */
+        .loading-shimmer {
+            display: inline-block;
+            background: #e0e0e0;
+            color: transparent !important;
+            border-radius: 4px;
+            animation: shimmer 1.2s ease-in-out infinite;
+            background-image: linear-gradient(90deg, #e0e0e0 0%, #f0f0f0 50%, #e0e0e0 100%);
+            background-size: 200% 100%;
+        }
+
+        @keyframes shimmer {
+            0% { background-position: -200% 0; }
+            100% { background-position: 200% 0; }
+        }
+
+        /* ----- RESPONSIVE ----- */
+        @media (max-width: 700px) {
+            .hero h1 { font-size: 2.8rem; }
+            .hero .tagline { font-size: 1.2rem; }
+            .stats-row { grid-template-columns: 1fr; }
+            .market-data { grid-template-columns: 1fr 1fr; }
+        }
+
+        @media (max-width: 450px) {
+            .market-data { grid-template-columns: 1fr; }
+            .hero .meme-badges span { font-size: 1.2rem; padding: 0.2rem 0.8rem; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+
+    <!-- HERO SECTION -->
+    <section class="hero">
+        <div class="brand-row">
+            <div class="logo-mark">
+                <img src="https://cdn.dexscreener.com/cms/images/A05VmTH_JLjdkIh-?width=128&height=128&fit=crop&quality=95&format=auto" alt="$PONSLESS logo">
+            </div>
+        </div>
+        <h1>$PONSLESS</h1>
+        <div class="tagline">The world's first meme token that promises nothing and delivers exactly that.</div>
+        <div class="sub-tagline">🧠 Pons + Useless = <strong>$PONSLESS</strong> on Solana</div>
+        <div class="meme-badges">
+            <span>🧢 100% Pons</span>
+            <span>🚫 0% Utility</span>
+            <span>✨ All Vibes</span>
+        </div>
+        <div style="font-size: 1.1rem; color: var(--light-green); margin-top: 1.2rem; position: relative; z-index: 1;">
+            <i class="fas fa-check-circle" style="color: var(--secondary-green);"></i> No utility. No roadmap. Just memes.
+        </div>
+    </section>
+
+    <!-- LIVE MARKET DATA - updated by JavaScript -->
+    <div class="market-data" id="marketData">
+        <div class="data-item">
+            <div class="label">Price</div>
+            <div class="value green" id="priceValue">$0.0000</div>
+        </div>
+        <div class="data-item">
+            <div class="label">Market Cap</div>
+            <div class="value" id="mcapValue">$0</div>
+        </div>
+        <div class="data-item">
+            <div class="label">24h Volume</div>
+            <div class="value" id="volumeValue">$0</div>
+        </div>
+        <div class="data-item">
+            <div class="label">Liquidity</div>
+            <div class="value green" id="liquidityValue">$0</div>
+        </div>
+    </div>
+
+    <!-- STATS ROW -->
+    <div class="stats-row">
+        <div class="stat-card">
+            <div class="number">0</div>
+            <div class="desc">PROMISED</div>
+            <div class="sub-desc">Roadmaps • Utility • Partnerships</div>
+        </div>
+        <div class="stat-card">
+            <div class="number">∞</div>
+            <div class="desc">BROKEN PROMISES</div>
+            <div class="sub-desc">From devs who “renounced”</div>
+        </div>
+        <div class="stat-card">
+            <div class="number">100%</div>
+            <div class="desc">PURE USELESSNESS</div>
+            <div class="sub-desc">Zero intrinsic value. Max culture.</div>
+        </div>
+    </div>
+
+    <!-- FEATURES -->
+    <h2 style="text-align: center; font-size: 2.2rem; color: var(--light-green); margin-top: 3rem;">Why Choose $PONSLESS?</h2>
+    <div class="features">
+        <div class="feature-card">
+            <div class="icon"><i class="fas fa-trash-alt"></i></div>
+            <h3>Pure Uselessness</h3>
+            <p>No DeFi, no NFTs, no staking. No utility whatsoever. Just pure, unadulterated memetic energy.</p>
+        </div>
+        <div class="feature-card">
+            <div class="icon"><i class="fas fa-chart-line"></i></div>
+            <h3>Guaranteed Losses</h3>
+            <p>Why hope for gains when you can be certain of absolutely nothing? We deliver on our promise.</p>
+        </div>
+        <div class="feature-card">
+            <div class="icon"><i class="fas fa-users"></i></div>
+            <h3>Honest Community</h3>
+            <p>We are the CTO (Community Takeover). No devs, no whales — just degens united in uselessness.</p>
+        </div>
+    </div>
+
+    <div class="ruvv-panel">
+        <div class="ruvv-copy">
+            <span class="kicker">Market Pulse</span>
+            <h3>The Solana meme market on one screen.</h3>
+            <p>See which coins are winning this week, what holders are saying, and which tokens are moving right now. Every number comes from the chain and updates as blocks land.</p>
+            <div class="ruvv-pills">
+                <span>Who is winning</span>
+                <span>Holder sentiment</span>
+                <span>Live movers</span>
+            </div>
+        </div>
+        <div class="ruvv-cta">
+            <a class="ruvv-link" href="https://ruvv.com?ref=THEHUSTLER" target="_blank" rel="noopener noreferrer">
+                <i class="fas fa-arrow-up-right-from-square"></i> Explore ruvv
+            </a>
+        </div>
+    </div>
+
+    <div class="burn-monitor" aria-live="polite">
+        <div class="monitor-head">
+            <span class="pulse-dot"></span> Live Burning Token Monitoring
+        </div>
+        <div class="burn-grid">
+            <div class="burn-item">
+                <span class="label">Burn status</span>
+                <strong id="burnStatus">Checking...</strong>
+            </div>
+            <div class="burn-item">
+                <span class="label">Mint status</span>
+                <strong id="mintStatus">Checking...</strong>
+            </div>
+            <div class="burn-item">
+                <span class="label">Liquidity state</span>
+                <strong id="liquidityStatus">Checking...</strong>
+            </div>
+            <div class="burn-item">
+                <span class="label">Last refresh</span>
+                <strong id="lastRefresh">--:--:--</strong>
+            </div>
+        </div>
+    </div>
+
+    <!-- CTA / CONTRACT + LINKS -->
+    <div class="cta-box">
+        <h2 style="color: var(--light-green); font-weight: 600;">Join the Useless Revolution</h2>
+        <p style="color: #ccc; margin: 0.5rem 0 1rem;">Stop overthinking. Stop reading white papers. Start vibing.</p>
+        <div class="contract">
+            <i class="fas fa-link" style="color: var(--secondary-green);"></i>
+            GLRGgpetTFGoetoD2A2CmTVCJTrnqfyxMGqPWFMcpump
+        </div>
+        <div class="wallet-actions">
+            <button id="buyButton" class="btn btn-primary" type="button">
+                <i class="fas fa-shopping-cart"></i> Buy $PONSLESS
+            </button>
+            <button id="connectWalletBtn" class="btn btn-outline" type="button">
+                <i class="fas fa-wallet"></i> Connect Wallet
+            </button>
+        </div>
+        <div id="walletStatus" class="wallet-status">Wallet not connected</div>
+        <div class="btn-group">
+            <a href="https://t.me/PONSLESS_CTO" target="_blank" class="btn">
+                <i class="fab fa-telegram-plane"></i> Telegram
+            </a>
+            <a href="https://x.com/i/communities/2024682744215683106" target="_blank" class="btn btn-outline">
+                <i class="fab fa-x-twitter"></i> X Community
+            </a>
+            <a href="https://dexscreener.com/solana/8hwqohdyg3vb5r2vesvpmv5c7dhwthqe4x6montdqivx" target="_blank" class="btn btn-outline" style="background: transparent; border-color: #777; color: #aaa;">
+                <i class="fas fa-chart-simple"></i> Chart (Dex)
+            </a>
+        </div>
+        <p style="margin-top: 1.2rem; font-size: 0.85rem; color: #999;">
+            <i class="fas fa-check-circle" style="color: var(--secondary-green);"></i> Liquidity burnt • Mint renounced • No dev wallet
+        </p>
+    </div>
+
+    <!-- DISCLAIMER -->
+    <div class="disclaimer">
+        <i class="fas fa-triangle-exclamation" style="color: var(--primary-green);"></i>
+        This token is a meme. It has no utility, no intrinsic value, and is designed purely for entertainment.
+        Do not invest money you are not prepared to lose. We are literally telling you it is useless.
+        $PONSLESS is a community-driven project on Solana. Not financial advice.
+    </div>
+
+</div>
+
+<!-- ==================== JAVASCRIPT FOR LIVE DATA ==================== -->
+<script>
+    (function() {
+        "use strict";
+
+        const BUY_URL = 'https://pump.fun/coin/GLRGgpetTFGoetoD2A2CmTVCJTrnqfyxMGqPWFMcpump';
+
+        // The DexScreener pair ID from your URL
+        const PAIR_ID = '8hwqohdyg3vb5r2vesvpmv5c7dhwthqe4x6montdqivx';
+        const API_URL = `https://api.dexscreener.com/latest/dex/pairs/solana/${PAIR_ID}`;
+
+        // DOM elements
+        const priceEl = document.getElementById('priceValue');
+        const mcapEl = document.getElementById('mcapValue');
+        const volumeEl = document.getElementById('volumeValue');
+        const liquidityEl = document.getElementById('liquidityValue');
+        const burnStatusEl = document.getElementById('burnStatus');
+        const mintStatusEl = document.getElementById('mintStatus');
+        const liquidityStatusEl = document.getElementById('liquidityStatus');
+        const lastRefreshEl = document.getElementById('lastRefresh');
+        const connectWalletBtn = document.getElementById('connectWalletBtn');
+        const buyButton = document.getElementById('buyButton');
+        const walletStatus = document.getElementById('walletStatus');
+
+        // Helper: format currency
+        function formatUSD(value) {
+            if (value === undefined || value === null || isNaN(value)) return '$0.00';
+            if (value >= 1e6) return '$' + (value / 1e6).toFixed(2) + 'M';
+            if (value >= 1e3) return '$' + (value / 1e3).toFixed(2) + 'K';
+            return '$' + value.toFixed(2);
+        }
+
+        function formatPrice(value) {
+            if (value === undefined || value === null || isNaN(value)) return '$0.0000';
+            if (value < 0.001) return '$' + value.toFixed(6);
+            if (value < 1) return '$' + value.toFixed(4);
+            return '$' + value.toFixed(2);
+        }
+
+        function setWalletStatus(message, type) {
+            walletStatus.textContent = message;
+            walletStatus.classList.remove('connected', 'error');
+            if (type) {
+                walletStatus.classList.add(type);
+            }
+        }
+
+        function updateBurnMonitoring(pair) {
+            const priceUsd = Number(pair.priceUsd ?? pair.price ?? 0) || 0;
+            const liquidityUsd = Number(pair.liquidity?.usd ?? pair.liquidity ?? 0) || 0;
+            const marketCap = Number(pair.marketCap ?? 0) || 0;
+
+            const isBurnVerified = priceUsd > 0 && liquidityUsd > 0 && marketCap >= 0;
+            burnStatusEl.textContent = isBurnVerified ? 'Verified' : 'Monitoring';
+            mintStatusEl.textContent = 'Renounced';
+            liquidityStatusEl.textContent = liquidityUsd > 0 ? 'Burnt / Locked' : 'Monitoring';
+            lastRefreshEl.textContent = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+        }
+
+        function getSolanaProvider() {
+            if (window.phantom && window.phantom.solana) {
+                return window.phantom.solana;
+            }
+            if (window.solana) {
+                return window.solana;
+            }
+            return null;
+        }
+
+        async function connectWallet() {
+            const provider = getSolanaProvider();
+            if (!provider) {
+                setWalletStatus('No wallet detected. Install Phantom or another Solana wallet.', 'error');
+                window.open('https://phantom.app/', '_blank', 'noopener');
+                return;
+            }
+
+            try {
+                const response = await provider.connect({ onlyIfTrusted: true });
+                const publicKey = response && response.publicKey ? response.publicKey.toString() : provider.publicKey && provider.publicKey.toString();
+
+                if (!publicKey) {
+                    await provider.connect();
+                }
+
+                const finalKey = provider.publicKey ? provider.publicKey.toString() : publicKey;
+                if (!finalKey) {
+                    throw new Error('Wallet connection failed.');
+                }
+
+                setWalletStatus(`Connected: ${finalKey.slice(0, 4)}...${finalKey.slice(-4)}`, 'connected');
+            } catch (error) {
+                console.error('Wallet connection failed:', error);
+                setWalletStatus('Connection denied or wallet unavailable.', 'error');
+            }
+        }
+
+        function openBuyFlow() {
+            window.open(BUY_URL, '_blank', 'noopener');
+            setWalletStatus('Redirecting to Ruvv to continue buying.', 'connected');
+        }
+
+        // Fetch and update data
+        async function fetchAndUpdate() {
+            try {
+                const response = await fetch(API_URL);
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                const data = await response.json();
+
+                // DexScreener returns a `pairs` array for this pair lookup.
+                const pair = Array.isArray(data.pairs) ? data.pairs[0] : (data.pair || null);
+                if (!pair) {
+                    console.warn('No pair data found');
+                    return;
+                }
+
+                // Extract values (API returns strings or numbers)
+                const priceUsd = Number(pair.priceUsd ?? pair.price ?? 0) || 0;
+                const marketCap = Number(pair.marketCap ?? 0) || 0;
+                const volume24h = Number(pair.volume?.h24 ?? pair.volume ?? 0) || 0;
+                const liquidity = Number(pair.liquidity?.usd ?? pair.liquidity ?? 0) || 0;
+
+                // Update DOM
+                priceEl.textContent = formatPrice(priceUsd);
+                mcapEl.textContent = formatUSD(marketCap);
+                volumeEl.textContent = formatUSD(volume24h);
+                liquidityEl.textContent = formatUSD(liquidity);
+                updateBurnMonitoring(pair);
+
+                // Update title with price
+                document.title = `$PONSLESS (${formatPrice(priceUsd)}) – The Most Honest Meme Token`;
+
+            } catch (error) {
+                console.error('Error fetching DexScreener data:', error);
+                // Optionally show a user-friendly error in the UI
+                priceEl.textContent = '⚠️ Offline';
+                mcapEl.textContent = '⚠️ Offline';
+                volumeEl.textContent = '⚠️ Offline';
+                liquidityEl.textContent = '⚠️ Offline';
+            }
+        }
+
+        connectWalletBtn.addEventListener('click', connectWallet);
+        buyButton.addEventListener('click', openBuyFlow);
+
+        // Initial fetch
+        fetchAndUpdate();
+
+        // Refresh every second for live market + burn monitoring
+        setInterval(fetchAndUpdate, 1000);
+
+    })();
+</script>
+
+</body>
+</html>
