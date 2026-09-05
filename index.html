@@ -357,19 +357,20 @@
             background: linear-gradient(180deg, rgba(16, 45, 37, 0.95), rgba(9, 18, 15, 0.96));
             border: 1px solid rgba(143, 216, 177, 0.2);
             border-radius: 1.5rem;
-            box-shadow: var(--shadow);
-            padding: 1.5rem;
+            box-shadow: inset 0 1px 0 rgba(255,255,255,0.02), var(--shadow);
+            padding: 1.25rem 1.25rem 1rem;
         }
 
         .monitor-head {
             display: flex;
             align-items: center;
-            gap: 0.7rem;
-            font-size: 1rem;
+            gap: 0.6rem;
+            font-size: 0.82rem;
             text-transform: uppercase;
-            letter-spacing: 0.08em;
+            letter-spacing: 0.12em;
             color: var(--light-green);
             font-weight: 700;
+            padding: 0.15rem 0 0.25rem;
         }
 
         .pulse-dot {
@@ -390,17 +391,17 @@
         .burn-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-            gap: 1rem;
-            margin-top: 1.2rem;
+            gap: 0.75rem;
+            margin-top: 1rem;
         }
 
         .source-note {
-            margin-top: 0.75rem;
+            margin-top: 0.55rem;
             display: flex;
             justify-content: flex-end;
             color: rgba(207, 229, 219, 0.7);
-            font-size: 0.62rem;
-            letter-spacing: 0.08em;
+            font-size: 0.56rem;
+            letter-spacing: 0.12em;
             text-transform: uppercase;
             opacity: 0.9;
         }
@@ -408,28 +409,29 @@
         .burn-item {
             background: rgba(255,255,255,0.03);
             border: 1px solid rgba(143, 216, 177, 0.15);
-            border-radius: 1rem;
-            padding: 0.9rem 1rem;
+            border-radius: 0.9rem;
+            padding: 0.8rem 0.9rem;
+            min-height: 86px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
         }
 
         .burn-item strong {
             display: block;
-            line-height: 1.3;
+            line-height: 1.2;
             word-break: break-word;
+            color: var(--white);
+            font-size: 1.05rem;
         }
 
         .burn-item .label {
             display: block;
             color: #cfe5db;
-            font-size: 0.72rem;
+            font-size: 0.68rem;
             letter-spacing: 0.08em;
             text-transform: uppercase;
-            margin-bottom: 0.35rem;
-        }
-
-        .burn-item strong {
-            color: var(--white);
-            font-size: 1.1rem;
+            margin-bottom: 0.3rem;
         }
 
         /* ----- CTA / CONTRACT ----- */
