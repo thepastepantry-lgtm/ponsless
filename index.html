@@ -394,6 +394,17 @@
             margin-top: 1.2rem;
         }
 
+        .source-note {
+            margin-top: 0.9rem;
+            display: flex;
+            justify-content: flex-end;
+            color: #cfe5db;
+            font-size: 0.72rem;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+            opacity: 0.9;
+        }
+
         .burn-item {
             background: rgba(255,255,255,0.03);
             border: 1px solid rgba(143, 216, 177, 0.15);
@@ -692,6 +703,7 @@
                 <strong id="lastRefresh">--:--:--</strong>
             </div>
         </div>
+        <div class="source-note" id="sourceNote">Source: on-chain audit / burn wallet</div>
     </div>
 
     <!-- CTA / CONTRACT + LINKS -->
@@ -950,6 +962,11 @@
             mintStatusEl.textContent = 'Renounced';
             liquidityStatusEl.textContent = liquidityUsd > 0 ? 'Burnt / Locked' : 'Monitoring';
             lastRefreshEl.textContent = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+
+            const sourceNote = document.getElementById('sourceNote');
+            if (sourceNote) {
+                sourceNote.textContent = `Last verified: ${new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' })} • Source: on-chain audit / burn wallet`;
+            }
         }
 
         function getSolanaProvider() {
